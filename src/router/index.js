@@ -1,17 +1,18 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import DefaultApp from '@/components/DefaultApp'
-import HelloWorld from '@/components/HelloWorld'
+import DefaultApp from '@/components/StarterTemplate'
+import index from '@/components/Index'
 import Login from '@/components/Login'
 
 Vue.use(Router)
 
 export default new Router({
+  mode:'history', //go trga/#/ od url
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'index',
+      component: index
     },
     {
       path: '/login',
@@ -19,8 +20,8 @@ export default new Router({
       component: Login
     },
     {
-      path: '/DefaultApp',
-      name: 'DefaultApp',
+      path: '/StarterTemplate',
+      name: 'StarterTemplate',
       component: DefaultApp
     }
   ]

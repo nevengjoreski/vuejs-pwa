@@ -5,37 +5,19 @@
 
     <v-navigation-drawer
       fixed
-      v-model="drawer"
+      v-model="isActive"
       :right="right"
       app
+      temporary
     >
       <v-list>
 
-        <v-list-tile @click="">
-
+        <v-list-tile @click="redirectTo(item.nav)" v-for="item in drawerItems" :key="item.title">
         <v-list-tile-action>
-            <v-icon>fa-home</v-icon>
+            <v-icon>{{item.icon}}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Start</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-
-        <v-list-tile @click="">
-          <v-list-tile-action>
-            <v-icon>fa-sign-in-alt</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Log In</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-
-        <v-list-tile @click="">
-          <v-list-tile-action>
-            <v-icon>fa-database</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Firebase</v-list-tile-title>
+            <v-list-tile-title>{{item.title}}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
 
@@ -47,15 +29,15 @@
     <!--MAIN NAVIGATION-->
 		<v-toolbar app fixed clipped-left>
 
-      <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="isActive = !isActive"></v-toolbar-side-icon>
 
       <v-toolbar-title>NenoLand</v-toolbar-title>
 
 			<v-toolbar-items class="hidden-xs-only mx-auto">
 				<v-btn flat to="/">Start</v-btn>
-				<v-btn flat to="/login">login</v-btn>
-				<v-btn flat to="/defaultapp">Default App</v-btn>
-				<v-btn flat to="/defaultapp">FireBase</v-btn>
+				<v-btn flat :to="login">login</v-btn>
+				<v-btn flat to="/StarterTemplate">Default App</v-btn>
+				<v-btn flat to="/firebase">FireBase</v-btn>
 			</v-toolbar-items>
 
 		</v-toolbar>
@@ -65,24 +47,49 @@
 		<v-content>
 			<router-view/>
 		</v-content>
+
+    <v-footer app fixed>
+      <span>&copy; 2017</span>
+    </v-footer>
 	</v-app>
 </template>
 
 <script>
 
-  import helloworld from './components/HelloWorld'
+  import index from './components/Index'
 
 	export default {
+    created:function(){
+      console.log(index.data().dark);
+    },
 		data() {
 			return {
-        drawer: false,
+        isActive: false,
         right: false,
         dark : false,
+        login: 'login',
+        drawerItems:[
+          {icon:'fa-home',title: 'Start', nav:'index'},
+          {icon:'fa-sign-in-alt',title: 'Log In', nav:'login'},
+          {icon:'fa-database',title: 'Firebase', nav:'StarterTemplate'}
+        ]
 			};
 		},
+    watch: {
+      // whenever question changes, this function will run
+      isActive: function (newQuestion, oldQuestion) {
+        console.log(newQuestion);
+        console.log(oldQuestion);
+      }
+    },
     methods:{
       switchToDark: function(){
         this.dark = !this.dark;
+      },
+      redirectTo:function(nav){
+        this.$router.push({
+          path: nav
+        })
       }
     },
     computed: {
