@@ -5,10 +5,21 @@
       <v-container fluid fill-height>
         <v-layout justify-center align-baseline>
           <v-flex shrink>
-            <v-btn color="//black" class="mx-0" @click="dark = !dark">Dark</v-btn>
+            <v-btn class="mx-0" @click="dark = !dark">Dark</v-btn>
           </v-flex>
         </v-layout>
       </v-container>
+    </v-content>
+
+    <v-content>
+      <v-layout row wrap>
+        <v-flex xs12 sm6>
+          <v-btn large> Explore</v-btn>
+        </v-flex>
+        <v-flex xs12 sm6>
+          <v-btn large> Explore</v-btn>
+        </v-flex>
+      </v-layout>
     </v-content>
 
   </v-app>

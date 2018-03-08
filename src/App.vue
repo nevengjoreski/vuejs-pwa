@@ -76,7 +76,6 @@
 			};
 		},
     watch: {
-      // whenever question changes, this function will run
       isActive: function (newQuestion, oldQuestion) {
         console.log(newQuestion);
         console.log(oldQuestion);
