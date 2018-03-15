@@ -4,6 +4,16 @@ import DefaultApp from '@/components/StarterTemplate'
 import index from '@/components/Index'
 import Login from '@/components/Login'
 
+import iHome from '@/components/iHome'
+import meetups from '@/components/Meetup/Meetups'
+import Meetup from '@/components/Meetup/Meetup'
+import createmeetup from '@/components/Meetup/createmeetup'
+import profile from '@/components/User/profile'
+import signup from '@/components/User/Signin'
+import signin from '@/components/User/signup'
+
+
+
 Vue.use(Router)
 
 export default new Router({
@@ -11,18 +21,66 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'index',
-      component: index
+      name: 'iHome',
+      component: iHome
     },
     {
-      path: '/login',
-      name: 'login',
-      component: Login
+      path: '/meetups',
+      name: 'meetups',
+      component: meetups
     },
     {
-      path: '/StarterTemplate',
-      name: 'StarterTemplate',
-      component: DefaultApp
+      path: '/meetup/new',
+      name: '/createmeetup',
+      component: createmeetup
+    },
+    {
+      path: '/meetup/:id',
+      name: 'Meetup',
+      props:true,
+      component: Meetup
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: profile
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: signup
+    },
+    {
+      path: '/signin',
+      name: 'signin',
+      component: signin
     }
   ]
 })
+
+
+// export default new Router({
+//   mode:'history', //go trga/#/ od url
+//   routes: [
+//     {
+//       path: '/',
+//       name: 'index',
+//       component: index
+//     },
+//     {
+//       path: '/login',
+//       name: 'login',
+//       component: Login
+//     },
+//     {
+//       path: '/StarterTemplate',
+//       name: 'StarterTemplate',
+//       component: DefaultApp
+//     },
+//     {
+//       path: '/',
+//       name: 'iHome',
+//       component: iHome
+//     }
+//   ]
+// })
