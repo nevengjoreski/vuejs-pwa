@@ -25,13 +25,17 @@ export const store = new Vuex.Store({
     user:{
       id:'asdasd',
       registeredMeetups:['asdasd'],
-      themeDark:true
     },
+    userDarkTheme: false,
   },
   mutations: {
     createMeetup(state, payload){
-
-    }
+      console.log(payload)
+      state.meetups.push(payload)
+    },
+    changeTheme(state, payload){
+      state.userDarkTheme = payload
+    },
   },
   actions: {},
   getters:{
@@ -43,12 +47,15 @@ export const store = new Vuex.Store({
     loadedMeetup(state){
       return (meetupId) =>{
         return state.meetups.find((meetup)=>{
-          return meetup.id === meetupId
+          return meetup.id.toString() === meetupId.toString()
         })
       }
     },
     featuredMeetups(state, getters){
       return getters.loadedMeetups.slice(0,5)
+    },
+    getUserTheme(state){
+      return state.userDarkTheme
     }
   }
 

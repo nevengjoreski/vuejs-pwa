@@ -48,27 +48,23 @@
 
 <script>
 
-  import iapp from '../../iApp'
-
     export default {
         name: "meetups",
-        data(){
-            return{
-              secondary: !iapp.data().dark
-            }
-        },
         mounted() {
-          this.$root.$on('changeTheme', data => {
-            this.secondary= !data;
-          });
+          // this.$root.$on('changeTheme', data => {
+          //   this.secondary= !data;
+          // });
         },
         computed:{
             meetups(){
               return this.$store.getters.featuredMeetups
             },
             latestPost(){
-              return this.$store.getters.loadedMeetup(this.$store.getters.loadedMeetups.length.toString())
+              return this.$store.getters.loadedMeetup('3')
             },
+            secondary(){
+              return !this.$store.getters.getUserTheme
+            }
         },
     };
 </script>

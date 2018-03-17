@@ -18,29 +18,6 @@
                 required
               />
             </v-flex>
-            <v-flex xs12 sm6 md4 lg3 offset-sm3 offset-md1 offset-lg1>
-              <v-text-field
-                label="Location"
-                name="location"
-                id="location"
-                v-model="location"
-                required
-              />
-            </v-flex>
-            <v-flex xs12 sm6 md4 lg3 offset-sm3 offset-md1 offset-lg1>
-              <v-text-field
-                label="Image URL"
-                name="src"
-                id="src"
-                v-model="src"
-                required
-              />
-            </v-flex>
-
-              <!--IMAGE-->
-            <v-flex xs12 sm6 md4 lg3 offset-sm3 offset-md1 offset-lg1>
-              <img :src="src" height="300px">
-            </v-flex>
 
             <v-flex xs12 sm6 md4 lg3 offset-sm3 offset-md1 offset-lg1>
               <v-text-field
@@ -52,10 +29,34 @@
                 required
               />
             </v-flex>
+
+            <v-flex xs12 sm6 md4 lg3 offset-sm3 offset-md1 offset-lg1>
+              <v-date-picker
+                class="mt-3"
+                v-model="date"
+                first-day-of-week="1"
+              />
+            </v-flex>
+
+            <v-flex xs12 sm6 md4 lg3 offset-sm3 offset-md1 offset-lg1>
+              <v-text-field
+                label="Image URL"
+                name="src"
+                id="src"
+                v-model="src"
+                required
+              />
+            </v-flex>
+
+              <!--IMAGE-->
+            <v-flex xs12 offset-sm3 offset-md1 offset-lg1>
+              <img :src="src" height="300px">
+            </v-flex>
+
           </v-layout>
           <v-layout row>
             <v-flex xs6 sm6 md4 lg3 offset-xs0 offset-sm5 offset-md5 offset-lg5>
-              <v-btn class="primary" :disabled="!formIsValid">Create Meetup</v-btn>
+              <v-btn class="primary" :disabled="!formIsValid" @click="saveMeetup">Create Meetup</v-btn>
             </v-flex>
           </v-layout>
         </v-form>
@@ -70,15 +71,24 @@
       data(){
           return{
             title:'',
-            location:'',
+            date:'',
             src:'',
             desc:''
           }
       },
       computed:{
           formIsValid(){
-            return this.title !== '' && this.location !== '' && this.src !== '' && this.desc !== ''
+            return this.title !== '' && this.date !== '' && this.src !== '' && this.desc !== ''
           }
+      },
+      methods:{
+        saveMeetup(){
+          this.$store.commit('createMeetup', {title: this.title,
+            date: this.date,
+            src: this.src,
+            desc: this.desc,
+            id: 4})
+        }
       }
     };
 </script>

@@ -2,7 +2,7 @@
 <v-container>
   <v-layout row wrap>
     <v-flex xs12>
-      <v-card  :class="{'secondary': sec}">
+      <v-card  :class="{'secondary': secondary}">
         <v-card-title primary-title>
           <div>
             <h3 class="headline mb-0">Kangaroo Valley Safari</h3>
@@ -28,24 +28,21 @@
 
 <script>
 
-  import iapp from '../../iApp'
-
     export default {
       name: "meetup",
       props:['id'],
-      data(){
-        return {
-          sec: !iapp.methods.getTheme()
-        }
-      },
       mounted() {
-        this.$root.$on('changeTheme', data => {
-          this.sec = !data;
-        });
+        // this.$root.$on('changeTheme', data => {
+        //   this.sec = !data;
+        // });
+        console.log(this.$store.state)
       },
       computed: {
         meetup() {
           return this.$store.getters.loadedMeetup(this.id)
+        },
+        secondary(){
+          return !this.$store.getters.getUserTheme
         }
       }
     };

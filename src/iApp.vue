@@ -6,7 +6,6 @@
     <v-navigation-drawer
       fixed
       v-model="isActive"
-      :right="right"
       app
       temporary
     >
@@ -40,7 +39,7 @@
 		</v-toolbar>
     <!---->
 
-    <v-btn fixed fab bottom right @click="switchToDark" class="mb-5">{{btnText}}</v-btn>
+    <v-btn fixed fab bottom right @click="toggleTheme" class="mb-5">{{btnText}}</v-btn>
     <main>
 		<v-content>
 			<router-view/>
@@ -58,8 +57,7 @@
 		data() {
 			return {
         isActive: false,
-        right: false,
-        dark : false,
+        // dark : false,
         login: 'login',
         drawerItems:[
           {icon:'supervisor_account',title: 'View Meetups', nav:'/meetups'},
@@ -71,26 +69,26 @@
 			};
 		},
     watch: {
-      dark:function(){
-        this.$root.$emit('changeTheme', this.dark)
-      }
+      // dark:function(){
+      //   this.$root.$emit('changeTheme', this.dark)
+      // }
     },
     methods:{
-      switchToDark: function(){
-        this.dark = !this.dark;
+      toggleTheme: function(){
+        this.$store.commit('changeTheme', !this.dark)
       },
       redirectTo:function(nav){
         this.$router.push({
           path: nav
         })
       },
-      getTheme(){
-        return this.dark
-      }
     },
     computed: {
       btnText: function () {
         return this.dark ? 'White' : 'Dark'
+      },
+      dark(){
+        return this.$store.getters.getUserTheme
       }
     },
 	};
