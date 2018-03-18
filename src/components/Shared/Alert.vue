@@ -4,6 +4,7 @@
   </v-alert>
 </template>
 
+
 <script>
     export default {
         name: "alert",
