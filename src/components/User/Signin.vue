@@ -5,16 +5,20 @@
         <custom-alert @dismissAlert="dismissAlert" :error="getError"/>
       </v-flex>
       <v-flex class="xs12 sm6 offset-sm3">
-        <v-card>
+        <v-card class="elevation-12">
+          <v-toolbar dark color="primary">
+            <v-toolbar-title class="mx-auto">Sign In</v-toolbar-title>
+          </v-toolbar>
           <v-card-text>
             <v-container>
               <v-form @submit.prevent="onSignin">
                 <v-layout wrap row>
                   <v-flex xs12 class="text-xs-center">
-                    <div class="primary--text title">Sign Up</div>
+                    <!--<div class="primary&#45;&#45;text title">Sign In</div>-->
                   </v-flex>
                   <v-flex xs12>
                     <v-text-field
+                      prepend-icon="person"
                       name="email"
                       label="Mail"
                       id="email"
@@ -25,6 +29,7 @@
                   </v-flex>
                   <v-flex xs12>
                     <v-text-field
+                      prepend-icon="lock"
                       name="password"
                       label="Password"
                       id="password"

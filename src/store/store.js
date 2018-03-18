@@ -12,7 +12,8 @@ export const store = new Vuex.Store({
         id:'-L7u3EDZ7PwkFb4j7uSz',
         title:'Squirrel',
         desc:'This is a Squirrel with red eyes',
-        date:'2018-07-17'}
+        date:'2018-07-17',
+        creatorId: 'YJby1feYMCYPcEODlTXq3YdJsO63'}
     ,
     user: null,
     userDarkTheme: false,
@@ -26,7 +27,7 @@ export const store = new Vuex.Store({
     changeTheme(state, payload){
       state.userDarkTheme = payload
     },
-    signUserUpIn(state, payload){
+    setUser(state, payload){
       state.user = payload
     },
     setLoading(state, payload){
@@ -37,15 +38,19 @@ export const store = new Vuex.Store({
     },
     setMeetupsFromFirebase(state, payload){
       state.meetups = payload
+    },
+    setUserFromLocal(state, payload){
+      state.user = payload
     }
   },
   actions: {
-    createMeetup({commit}, payload){
+    createMeetup({commit, getters}, payload){
       const meetup = {
         title: payload.title,
         date: payload.date,
         src: payload.src,
-        desc: payload.desc
+        desc: payload.desc,
+        creatorId : getters.getUser.id
       }
       firebase.database().ref('meetups').push(meetup)
         .then(data =>{
@@ -69,7 +74,7 @@ export const store = new Vuex.Store({
               registeredMeetups: []
             }
             commit('setLoading', false)
-            commit('signUserUpIn',newUser)
+            commit('setUser',newUser)
           }
         )
         .catch(
@@ -86,7 +91,7 @@ export const store = new Vuex.Store({
         .then(
           user =>{
             commit('setLoading', false)
-            commit('signUserUpIn', user)
+            commit('setUser', user)
           }
         ).catch(
           error => {
@@ -94,6 +99,16 @@ export const store = new Vuex.Store({
             commit('setError', error.message)
           }
       )
+    },
+    autoSignIn({commit, getters}, payload){
+      commit('setUserFromLocal', {
+        id : payload.uid,
+        registeredMeetups:[]
+      })
+    },
+    userLogout({commit, getters}){
+      firebase.auth().signOut()
+      commit('setUser', null)
     },
     loadMeetups({commit}){
       commit('setLoading', true)

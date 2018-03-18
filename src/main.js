@@ -43,6 +43,12 @@ new Vue({
       storageBucket: "vuejs-pwa-60fc0.appspot.com"
     })
 
+    firebase.auth().onAuthStateChanged( user => {
+      if(user){
+        this.$store.dispatch('autoSignIn', user)
+      }
+    })
+
     this.$store.dispatch('loadMeetups')
   }
 })

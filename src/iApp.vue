@@ -10,7 +10,6 @@
       temporary
     >
       <v-list>
-
         <v-list-tile @click="redirectTo(item.nav)" v-for="item in drawerItems" :key="item.title">
         <v-list-tile-action>
             <v-icon>{{item.icon}}</v-icon>
@@ -20,22 +19,26 @@
           </v-list-tile-content>
         </v-list-tile>
 
+        <v-list-tile @click="userLogOut" v-if="userLogedIn">
+          <v-list-tile-action>
+            <v-icon>fa-sign-out-alt</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Log Out</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-
     <!---->
 
     <!--MAIN NAVIGATION-->
 		<v-toolbar app fixed clipped-left>
-
       <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="isActive = !isActive"/>
-
       <v-toolbar-title><router-link to="/" tag="button">NenoLand</router-link></v-toolbar-title>
-
 			<v-toolbar-items class="hidden-xs-only mx-auto">
 				<v-btn v-for="item in  drawerItems" flat :to="item.nav" :key="item.title"><v-icon class="pr-1">{{item.icon}}</v-icon>{{item.title}}</v-btn>
+				<v-btn flat @click="userLogOut" v-if="userLogedIn"><v-icon class="pr-1">fa-sign-out-alt</v-icon>Log Out</v-btn>
 			</v-toolbar-items>
-
 		</v-toolbar>
     <!---->
 
@@ -69,6 +72,9 @@
           path: nav
         })
       },
+      userLogOut(){
+        this.$store.dispatch('userLogout')
+      }
     },
     computed: {
       btnText: function () {
@@ -76,6 +82,9 @@
       },
       dark(){
         return this.$store.getters.getUserTheme
+      },
+      userLogedIn(){
+        return this.$store.getters.getUser
       },
       drawerItems(){
         if(this.$store.getters.getUser !== null && this.$store.getters.getUser !== undefined) {
