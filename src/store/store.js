@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from 'vuex'
+import * as firebase from 'firebase'
 
 Vue.use(Vuex)
 
@@ -22,22 +23,80 @@ export const store = new Vuex.Store({
         desc:'This is a Squirrel with brown eyes',
         date:'2018-07-15'},
     ],
-    user:{
-      id:'asdasd',
-      registeredMeetups:['asdasd'],
-    },
+    user: null,
     userDarkTheme: false,
+    loading: false,
+    error: null,
   },
   mutations: {
     createMeetup(state, payload){
-      console.log(payload)
       state.meetups.push(payload)
     },
     changeTheme(state, payload){
       state.userDarkTheme = payload
     },
+    signUserUpIn(state, payload){
+      state.user = payload
+    },
+    setLoading(state, payload){
+      state.loading = payload
+    },
+    setError(state, payload){
+      state.error = payload
+    }
   },
-  actions: {},
+  actions: {
+    createMeetup({commit}, payload){
+      const meetup = {
+        title: payload.title,
+        date: payload.date,
+        src: payload.src,
+        desc: payload.desc,
+        id: 4}
+
+      //reach out to firebase and store it
+      commit('createMeetup', meetup)
+    },
+    signUserUp({commit}, payload){
+      commit('setLoading', true)
+      commit('setError', null)
+      firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
+        .then(
+          user => {
+            const newUser = {
+              id: user.uid,
+              registeredMeetups: []
+            }
+            commit('setLoading', false)
+            commit('signUserUpIn',newUser)
+          }
+        )
+        .catch(
+          error =>{
+            commit('setLoading', false)
+            commit('setError', error.message)
+            console.log(error)
+          }
+        )
+    },
+    signIn({commit}, payload){
+      commit('setLoading', true)
+      commit('setError', null)
+      firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+        .then(
+          user =>{
+            commit('setLoading', false)
+            commit('signUserUpIn', user)
+          }
+        ).catch(
+          error => {
+            commit('setLoading', false)
+            commit('setError', error.message)
+            console.log(error)
+          }
+      )
+    }
+  },
   getters:{
     loadedMeetups(state){
       return state.meetups.sort((A,B)=>{
@@ -56,6 +115,12 @@ export const store = new Vuex.Store({
     },
     getUserTheme(state){
       return state.userDarkTheme
+    },
+    getUser(state){
+      return state.user
+    },
+    getError(state){
+      return state.error
     }
   }
 

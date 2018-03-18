@@ -50,11 +50,6 @@
 
     export default {
         name: "meetups",
-        mounted() {
-          // this.$root.$on('changeTheme', data => {
-          //   this.secondary= !data;
-          // });
-        },
         computed:{
             meetups(){
               return this.$store.getters.featuredMeetups

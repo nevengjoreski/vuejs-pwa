@@ -9,10 +9,8 @@ import meetups from '@/components/Meetup/Meetups'
 import Meetup from '@/components/Meetup/Meetup'
 import createmeetup from '@/components/Meetup/createmeetup'
 import profile from '@/components/User/profile'
-import signup from '@/components/User/Signin'
-import signin from '@/components/User/signup'
-
-
+import signup from '@/components/User/signup'
+import signin from '@/components/User/signin'
 
 Vue.use(Router)
 
@@ -57,30 +55,3 @@ export default new Router({
     }
   ]
 })
-
-
-// export default new Router({
-//   mode:'history', //go trga/#/ od url
-//   routes: [
-//     {
-//       path: '/',
-//       name: 'index',
-//       component: index
-//     },
-//     {
-//       path: '/login',
-//       name: 'login',
-//       component: Login
-//     },
-//     {
-//       path: '/StarterTemplate',
-//       name: 'StarterTemplate',
-//       component: DefaultApp
-//     },
-//     {
-//       path: '/',
-//       name: 'iHome',
-//       component: iHome
-//     }
-//   ]
-// })

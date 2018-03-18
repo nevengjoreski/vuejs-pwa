@@ -7,7 +7,7 @@
     </v-layout>
     <v-layout row wrap>
       <v-flex xs12>
-        <v-form>
+        <v-form @submit.prevent="saveMeetup">
           <v-layout row wrap>
             <v-flex xs12 sm6 md4 lg3 offset-sm3 offset-md1 offset-lg1>
               <v-text-field
@@ -31,8 +31,11 @@
             </v-flex>
 
             <v-flex xs12 sm6 md4 lg3 offset-sm3 offset-md1 offset-lg1>
+              <p class="grey--text subheading">Date</p>
               <v-date-picker
                 class="mt-3"
+                color="primary"
+                full-width
                 v-model="date"
                 first-day-of-week="1"
               />
@@ -56,7 +59,11 @@
           </v-layout>
           <v-layout row>
             <v-flex xs6 sm6 md4 lg3 offset-xs0 offset-sm5 offset-md5 offset-lg5>
-              <v-btn class="primary" :disabled="!formIsValid" @click="saveMeetup">Create Meetup</v-btn>
+              <v-btn class="primary"
+                     :disabled="!formIsValid"
+                     type="submit"
+
+              >Create Meetup</v-btn>
             </v-flex>
           </v-layout>
         </v-form>
@@ -81,13 +88,18 @@
             return this.title !== '' && this.date !== '' && this.src !== '' && this.desc !== ''
           }
       },
+      mounted(){
+        this.date = this.$moment.format('YYYY-MM-DD');
+      },
       methods:{
         saveMeetup(){
-          this.$store.commit('createMeetup', {title: this.title,
-            date: this.date,
-            src: this.src,
-            desc: this.desc,
-            id: 4})
+          this.$store.dispatch('createMeetup', {title: this.title,
+              date: this.date,
+              src: this.src,
+              desc: this.desc,
+              id: 4})
+
+          this.$router.push('/meetups')
         }
       }
     };

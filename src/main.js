@@ -1,16 +1,20 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-// import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import {store} from './store/store'
-
+import moment from 'moment';
+import * as firebase from 'firebase'
 import iApp from './iApp'
+
+//Components
+import AlertComp from '@/components/Shared/Alert'
 
 // Helpers
 import colors from 'vuetify/es5/util/colors'
+Vue.component('custom-alert', AlertComp)
 
 Vue.use(Vuetify, {
   theme: {
@@ -20,16 +24,8 @@ Vue.use(Vuetify, {
   }
 })
 
-// Vue.use(Vuetify, {
-//   theme: {
-//     primary: colors.purple.base,
-//     secondary: colors.grey.darken1,
-//     accent: colors.shades.black,
-//     error: colors.red.accent3
-//   }
-// })
-
 Vue.config.productionTip = false
+Vue.prototype.$moment = moment();
 
 /* eslint-disable no-new */
 new Vue({
@@ -37,5 +33,14 @@ new Vue({
   router,
   store,
   components: { iApp },
-  template: '<iApp/>'
+  template: '<iApp/>',
+  created(){
+    firebase.initializeApp({
+      apiKey: "AIzaSyAMwXjk7MEMw-6r3-oXCp-nOO-vGCQqZJo",
+      authDomain: "vuejs-pwa-60fc0.firebaseapp.com",
+      databaseURL: "https://vuejs-pwa-60fc0.firebaseio.com",
+      projectId: "vuejs-pwa-60fc0",
+      storageBucket: "vuejs-pwa-60fc0.appspot.com"
+    })
+  }
 })

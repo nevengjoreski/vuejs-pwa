@@ -57,22 +57,9 @@
 		data() {
 			return {
         isActive: false,
-        // dark : false,
         login: 'login',
-        drawerItems:[
-          {icon:'supervisor_account',title: 'View Meetups', nav:'/meetups'},
-          {icon:'room',title: 'Organize Meetup', nav:'/meetup/new'},
-          {icon:'person',title: 'Profile', nav:'/Profile'},
-          {icon:'face',title: 'Sign Up', nav:'/Signup'},
-          {icon:'lock_open',title: 'Sign In', nav:'/Signin'}
-        ]
 			};
 		},
-    watch: {
-      // dark:function(){
-      //   this.$root.$emit('changeTheme', this.dark)
-      // }
-    },
     methods:{
       toggleTheme: function(){
         this.$store.commit('changeTheme', !this.dark)
@@ -89,6 +76,20 @@
       },
       dark(){
         return this.$store.getters.getUserTheme
+      },
+      drawerItems(){
+        if(this.$store.getters.getUser !== null && this.$store.getters.getUser !== undefined) {
+          return [
+            {icon: 'supervisor_account', title: 'View Meetups', nav: '/meetups'},
+            {icon: 'room', title: 'Organize Meetup', nav: '/meetup/new'},
+            {icon: 'person', title: 'Profile', nav: '/Profile'},
+          ]
+        } else {
+          return [
+            {icon: 'face', title: 'Sign Up', nav: '/Signup'},
+            {icon: 'lock_open', title: 'Sign In', nav: '/Signin'}
+          ]
+        }
       }
     },
 	};

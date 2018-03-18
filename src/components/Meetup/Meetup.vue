@@ -31,12 +31,6 @@
     export default {
       name: "meetup",
       props:['id'],
-      mounted() {
-        // this.$root.$on('changeTheme', data => {
-        //   this.sec = !data;
-        // });
-        console.log(this.$store.state)
-      },
       computed: {
         meetup() {
           return this.$store.getters.loadedMeetup(this.id)
