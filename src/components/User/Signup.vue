@@ -2,7 +2,7 @@
   <v-container>
     <v-layout wrap row>
       <v-flex class="xs12">
-        <custom-alert/>
+        <custom-alert @dismissAlert="dismissAlert" :error="getError"/>
       </v-flex>
       <v-flex class="xs12 sm6 offset-sm3">
         <v-card>
@@ -46,8 +46,13 @@
                     <v-btn
                       color="primary"
                       type="submit"
-                      :disabled="!checkSubmitLogin"
-                    >Create User</v-btn>
+                      :disabled="!checkSubmitLogin && !loading"
+                      :loading="loading"
+                    >Create User
+                      <span slot="loader" class="custom-loader">
+                        <v-icon>cached</v-icon>
+                      </span>
+                    </v-btn>
                   </v-flex>
 
                 </v-layout>
@@ -76,6 +81,9 @@
               email: this.email,
               password: this.password
             })
+          },
+          dismissAlert(){
+            this.$store.commit('setError', null)
           }
         },
         computed:{
@@ -89,6 +97,12 @@
           user(){
             return this.$store.getters.getUser
           },
+          getError(){
+            return this.$store.getters.getError !== null ? this.$store.getters.getError : false
+          },
+          loading(){
+            return this.$store.getters.getLoading
+          }
         },
         watch:{
           user(newValue){
@@ -101,5 +115,40 @@
 </script>
 
 <style scoped>
-
+  .custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+  }
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 </style>

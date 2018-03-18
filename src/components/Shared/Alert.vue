@@ -1,6 +1,6 @@
 <template>
-  <v-alert outline color="error" dismissible @click="errorclick" icon="warning" :value="alert">
-    {{error.message}}
+  <v-alert outline color="error" dismissible @click="errorClick" icon="warning" :value="error">
+    {{error}}
   </v-alert>
 </template>
 
@@ -8,23 +8,10 @@
 <script>
     export default {
         name: "alert",
-        data () {
-          return {
-            alert: false
-          }
-        },
-        computed:{
-          error(){
-            this.alert = this.$store.getters.getError !== null
-            return {
-              hasError : this.$store.getters.getError !== null && this.$store.getters.getError !== undefined,
-              message: this.$store.getters.getError
-            }
-          }
-        },
+        props:['error'],
         methods:{
-          errorclick(){
-            this.alert = !this.alert
+          errorClick(){
+            this.$emit('dismissAlert')
           }
         }
     };
