@@ -42,5 +42,7 @@ new Vue({
       projectId: "vuejs-pwa-60fc0",
       storageBucket: "vuejs-pwa-60fc0.appspot.com"
     })
+
+    this.$store.dispatch('loadMeetups')
   }
 })

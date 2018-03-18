@@ -3,8 +3,7 @@
   <v-layout row wrap>
     <v-flex xs12>
       <v-card  :class="{'secondary': secondary}">
-        <v-card-media :src="latestPost.src" height="200px">
-        </v-card-media>
+        <v-card-media :src="latestPost.src" height="200px"/>
         <v-card-title primary-title>
           <div>
             <h3 class="headline mb-0"> Latest SQURELL</h3>
@@ -55,7 +54,7 @@
               return this.$store.getters.featuredMeetups
             },
             latestPost(){
-              return this.$store.getters.loadedMeetup('3')
+              return this.$store.getters.getFeaturedMeetup
             },
             secondary(){
               return !this.$store.getters.getUserTheme

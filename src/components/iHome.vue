@@ -12,8 +12,13 @@
         </v-btn>
       </v-flex>
     </v-layout>
-    <v-layout mt-2 row wrap>
-      <v-flex >
+    <v-layout wrap row v-if="loading">
+      <v-flex xs12 class="text-xs-center">
+        <v-progress-circular indeterminate :size="500" :width="0.3" color="primary"/>
+      </v-flex>
+    </v-layout>
+    <v-layout mt-2 row wrap v-else>
+      <v-flex xs12>
           <v-carousel hide-controls >
             <v-carousel-item
               v-for="(item,i) in meetups"
@@ -28,8 +33,7 @@
             </v-carousel-item>
           </v-carousel>
       </v-flex>
-    </v-layout>
-    <v-layout row wrap>
+
       <v-flex xs12 class="text-xs-center primary">
         <v-btn block class="primary" depressed="">Join Us</v-btn>
       </v-flex>
@@ -44,8 +48,12 @@
         computed:{
           meetups:function () {
             return this.$store.getters.featuredMeetups
+          },
+          loading(){
+            return this.$store.getters.getLoading
           }
         },
+
     };
 </script>
 

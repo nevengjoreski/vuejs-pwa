@@ -60,9 +60,8 @@
     name: "signin",
     data(){
       return{
-        email:'',
-        password:'',
-        confirmPassword:'',
+        email:'asd@asd.asd',
+        password:'asd123'
       }
     },
     methods:{

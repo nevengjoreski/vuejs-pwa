@@ -6,23 +6,14 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    meetups:[
+    meetups:[],
+    featuredMeetup:
       {src:'https://inhabitat.com/wp-content/blogs.dir/1/files/2013/01/Victor-Manuel-Fleites-Escobar-White-Squirrel-Shed-2.jpeg',
-        id:'1',
+        id:'-L7u3EDZ7PwkFb4j7uSz',
         title:'Squirrel',
         desc:'This is a Squirrel with red eyes',
-        date:'2018-07-17'},
-      {src:'http://www.ellisnaturephotography.com/shop/images/White%20Squirrel%2072dpi.jpg',
-        id:'2',
-        title:'Squirrel',
-        desc:'This is a Squirrel with black eyes',
-        date:'2018-07-16'},
-      {src:'http://pennylhunt.com/wp-content/uploads/2014/06/snowy-squirrel.jpg',
-        id:'3',
-        title:'Squirrel',
-        desc:'This is a Squirrel with brown eyes',
-        date:'2018-07-15'},
-    ],
+        date:'2018-07-17'}
+    ,
     user: null,
     userDarkTheme: false,
     loading: false,
@@ -43,6 +34,9 @@ export const store = new Vuex.Store({
     },
     setError(state, payload){
       state.error = payload
+    },
+    setMeetupsFromFirebase(state, payload){
+      state.meetups = payload
     }
   },
   actions: {
@@ -51,11 +45,18 @@ export const store = new Vuex.Store({
         title: payload.title,
         date: payload.date,
         src: payload.src,
-        desc: payload.desc,
-        id: 4}
-
-      //reach out to firebase and store it
-      commit('createMeetup', meetup)
+        desc: payload.desc
+      }
+      firebase.database().ref('meetups').push(meetup)
+        .then(data =>{
+          commit('createMeetup', {
+            ...meetup,
+            id: data.key
+          })
+        })
+        .catch(error =>{
+          console.log(error)
+        })
     },
     signUserUp({commit}, payload){
       commit('setLoading', true)
@@ -93,6 +94,25 @@ export const store = new Vuex.Store({
             commit('setError', error.message)
           }
       )
+    },
+    loadMeetups({commit}){
+      commit('setLoading', true)
+      firebase.database().ref('meetups').once('value')
+        .then(data => {
+          const meetups = []
+          for(let key in data.val()){
+            meetups.push({
+              ...data.val()[key],
+              id : key
+            })
+          }
+          commit('setMeetupsFromFirebase', meetups)
+          commit('setLoading', false)
+        })
+        .catch(error => {
+          console.log(error)
+          commit('setLoading', false)
+        })
     }
   },
   getters:{
@@ -107,6 +127,9 @@ export const store = new Vuex.Store({
           return meetup.id.toString() === meetupId.toString()
         })
       }
+    },
+    getFeaturedMeetup(state){
+      return state.featuredMeetup
     },
     featuredMeetups(state, getters){
       return getters.loadedMeetups.slice(0,5)
@@ -123,6 +146,6 @@ export const store = new Vuex.Store({
     getLoading(state){
       return state.loading
     }
-  }
+  },
 
 });
