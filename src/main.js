@@ -40,7 +40,7 @@ new Vue({
       authDomain: "vuejs-pwa-60fc0.firebaseapp.com",
       databaseURL: "https://vuejs-pwa-60fc0.firebaseio.com",
       projectId: "vuejs-pwa-60fc0",
-      storageBucket: "vuejs-pwa-60fc0.appspot.com"
+      storageBucket: "vuejs-pwa-60fc0.appspot.com" //"gs://vuejs-pwa-60fc0.appspot.com/"
     })
 
     firebase.auth().onAuthStateChanged( user => {

@@ -7,7 +7,7 @@
     </v-layout>
     <v-layout row wrap>
       <v-flex xs12>
-        <v-form @submit.prevent="saveMeetup">
+        <v-form @submit.prevent="createMeetup">
           <v-layout row wrap>
             <v-flex xs12 sm6 md4 lg3 offset-sm3 offset-md1 offset-lg1>
               <v-text-field
@@ -42,13 +42,16 @@
             </v-flex>
 
             <v-flex xs12 sm6 md4 lg3 offset-sm3 offset-md1 offset-lg1>
-              <v-text-field
-                label="Image URL"
-                name="src"
-                id="src"
-                v-model="src"
-                required
-              />
+              <!--<v-text-field-->
+                <!--label="Image URL"-->
+                <!--name="src"-->
+                <!--id="src"-->
+                <!--v-model="src"-->
+                <!--required-->
+              <!--/>-->
+
+              <v-btn raised color="primary" @click="onPickFile">Upload Image</v-btn>
+              <input type="file" style="display: none" ref="fileInput" accept="image/*" @change="onFileChangeClick">
             </v-flex>
 
               <!--IMAGE-->
@@ -80,26 +83,46 @@
             title:'',
             date:'',
             src:'',
-            desc:''
+            desc:'',
+            image:null
           }
       },
       computed:{
           formIsValid(){
-            return this.title !== '' && this.date !== '' && this.src !== '' && this.desc !== ''
+            return this.title !== '' && this.date !== '' && this.image !== '' && this.desc !== ''
           }
       },
       mounted(){
         this.date = this.$moment.format('YYYY-MM-DD');
       },
       methods:{
-        saveMeetup(){
+        createMeetup(){
+
           this.$store.dispatch('createMeetup', {title: this.title,
               date: this.date,
-              src: this.src,
-              desc: this.desc,
-              id: 4})
+              image: this.image,
+              desc: this.desc
+          })
 
           this.$router.push('/meetups')
+        },
+        onPickFile(){
+          this.$refs.fileInput.click();
+        },
+        onFileChangeClick(event){
+          const files = event.target.files
+          let filename = files[0].name
+          //ako nema . extenzija na fajlot
+          if(filename.lastIndexOf('.') <= 0){
+            return alert('Please add a valid file!')
+          }
+
+          const fileReader = new FileReader()
+          fileReader.addEventListener('load', () =>{
+            this.src = fileReader.result
+          })
+          fileReader.readAsDataURL(files[0])
+          this.image = files[0]
         }
       }
     };
