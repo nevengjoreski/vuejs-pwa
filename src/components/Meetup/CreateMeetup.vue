@@ -50,7 +50,7 @@
                 <!--required-->
               <!--/>-->
 
-              <v-btn raised color="primary" @click="onPickFile">Upload Image</v-btn>
+              <v-btn raised color="primary" @click="onPickFile" v-if="!id">Upload Image</v-btn>
               <input type="file" style="display: none" ref="fileInput" accept="image/*" @change="onFileChangeClick">
             </v-flex>
 
@@ -65,8 +65,13 @@
               <v-btn class="primary"
                      :disabled="!formIsValid"
                      type="submit"
-
+                     v-if="!id"
               >Create Meetup</v-btn>
+              <v-btn class="primary"
+                     :disabled="!formIsValid"
+                     @click="updateMeetupToStore"
+                     v-else
+              >Edit Meetup</v-btn>
             </v-flex>
           </v-layout>
         </v-form>
@@ -78,6 +83,7 @@
 <script>
     export default {
         name: "create-meetup",
+      props:['id'],
       data(){
           return{
             title:'',
@@ -89,11 +95,18 @@
       },
       computed:{
           formIsValid(){
-            return this.title !== '' && this.date !== '' && this.image !== '' && this.desc !== ''
+            return this.title !== '' && this.date !== '' && this.src !== '' && this.desc !== ''
           }
       },
       mounted(){
-        this.date = this.$moment.format('YYYY-MM-DD');
+        this.date = this.$moment.format('YYYY-MM-DD')
+        if(this.id){
+          let meetup = this.$store.getters.loadedMeetup(this.id)
+          this.title = meetup.title || ''
+          this.date = meetup.date || ''
+          this.src = meetup.src || ''
+          this.desc = meetup.desc || ''
+        }
       },
       methods:{
         createMeetup(){
@@ -123,6 +136,18 @@
           })
           fileReader.readAsDataURL(files[0])
           this.image = files[0]
+        },
+        updateMeetupToStore(){
+
+          this.$store.dispatch('updateMeetup', {
+            id: this.id,
+            title: this.title,
+            date: this.date,
+            desc: this.desc
+          })
+
+          this.$router.push('/meetups')
+
         }
       }
     };

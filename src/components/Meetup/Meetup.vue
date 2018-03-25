@@ -2,7 +2,7 @@
 <v-container>
   <v-layout row wrap>
     <v-flex xs12>
-      <v-card  :class="{'secondary': secondary}">
+      <v-card  :class="{'secondary': secondary}" v-if="meetup">
         <v-card-title primary-title>
           <div>
             <h3 class="headline mb-0">Kangaroo Valley Safari</h3>
@@ -18,6 +18,11 @@
         </v-card-title>
         <v-card-actions>
           <v-spacer/>
+          <v-btn color="primary"
+                 class="align-end"
+                 :to="'/meetup/edit/' + id"
+                 v-if="creatorIsCurrentUser"
+          >Edit</v-btn>
           <v-btn color="primary" class="align-end">Register</v-btn>
         </v-card-actions>
       </v-card>
@@ -37,6 +42,9 @@
         },
         secondary(){
           return !this.$store.getters.getUserTheme
+        },
+        creatorIsCurrentUser(){
+          return this.meetup.creatorId === this.$store.getters.getUser.id
         }
       }
     };

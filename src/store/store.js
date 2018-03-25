@@ -67,7 +67,8 @@ export const store = new Vuex.Store({
           return firebase.storage().ref('meetups/' + key + '.' + ext).put(payload.image)
         })
         .then(fileData => {
-          src = fileData.metadata.downloadURLs[0]
+          // src = fileData.metadata.downloadURLs[0]
+          src = fileData.downloadURL
           return firebase.database().ref('meetups').child(key).update({src : src})
         })
         .then(()=>{
@@ -130,8 +131,7 @@ export const store = new Vuex.Store({
     },
     loadMeetups({commit}){
       commit('setLoading', true)
-      firebase.database().ref('meetups').once('value')
-        .then(data => {
+      firebase.database().ref('meetups').on('value', data => {
           const meetups = []
           for(let key in data.val()){
             meetups.push({
@@ -142,10 +142,17 @@ export const store = new Vuex.Store({
           commit('setMeetupsFromFirebase', meetups)
           commit('setLoading', false)
         })
-        .catch(error => {
-          console.log(error)
-          commit('setLoading', false)
-        })
+    },
+    updateMeetup({commit}, payload){
+      commit('setLoading', true)
+
+      firebase.database().ref('meetups').child(payload.id).update({
+        title: payload.title,
+        date: payload.date,
+        desc: payload.desc
+      })
+
+      commit('setLoading', false)
     }
   },
   getters:{

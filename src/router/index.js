@@ -33,6 +33,12 @@ export default new Router({
       name: '/createmeetup',
       component: createmeetup,
       beforeEnter:AuthGuard
+    },{
+      path: '/meetup/edit/:id',
+      name: '/editmeetup',
+      props:true,
+      component: createmeetup,
+      beforeEnter:AuthGuard
     },
     {
       path: '/meetup/:id',
