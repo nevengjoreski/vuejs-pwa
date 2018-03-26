@@ -23,9 +23,13 @@
                  :to="'/meetup/edit/' + id"
                  v-if="creatorIsCurrentUser"
           >Edit</v-btn>
-          <v-btn color="primary" class="align-end">Register</v-btn>
+          <!--<v-btn color="primary" class="align-end">Register</v-btn>-->
+          <registration-dialog></registration-dialog>
         </v-card-actions>
       </v-card>
+    </v-flex>
+    <v-flex xs12>
+
     </v-flex>
   </v-layout>
 </v-container>

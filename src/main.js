@@ -11,10 +11,13 @@ import iApp from './iApp'
 
 //Components
 import AlertComp from '@/components/Shared/Alert'
+import RegistrationDlg from '@/components/Shared/RegistrationDialog'
+
+Vue.component('custom-alert', AlertComp)
+Vue.component('registration-dialog', RegistrationDlg)
 
 // Helpers
 import colors from 'vuetify/es5/util/colors'
-Vue.component('custom-alert', AlertComp)
 
 Vue.use(Vuetify, {
   theme: {
